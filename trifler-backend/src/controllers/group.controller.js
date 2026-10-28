@@ -1,5 +1,13 @@
 import asyncHandler from "../utils/asyncHandler.js";
 import * as groupService from "../services/group.service.js";
+import { sendToUsers } from "../websocket/connectionStore.js";
+
+const notifyMembers = (group) => {
+  sendToUsers(
+    group.members.map((member) => member.id || member._id || member),
+    { type: "conversation.created", conversationId: group.id },
+  );
+};
 
 // GET /api/groups
 export const listGroups = asyncHandler(async (req, res) => {
@@ -10,6 +18,7 @@ export const listGroups = asyncHandler(async (req, res) => {
 // POST /api/groups   body: { name, description?, memberIds: [...] }
 export const createGroup = asyncHandler(async (req, res) => {
   const group = await groupService.createGroup(req.user._id, req.body);
+  notifyMembers(group);
   res.status(201).json({ success: true, group });
 });
 
@@ -29,6 +38,7 @@ export const addMember = asyncHandler(async (req, res) => {
     req.user._id,
     req.body.userId,
   );
+  notifyMembers(group);
   res.status(201).json({ success: true, group });
 });
 

@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-// A MongoDB ObjectId as a string: 24 hex characters
+//! A MongoDB ObjectId as a string: 24 hex characters
 export const objectIdSchema = z
   .string({ error: "Id is required" })
   .regex(/^[a-f\d]{24}$/i, "Invalid id");

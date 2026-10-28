@@ -1,1 +1,1 @@
-// # join or leave a conversation
+//! # join or leave a conversation - it pending - not required

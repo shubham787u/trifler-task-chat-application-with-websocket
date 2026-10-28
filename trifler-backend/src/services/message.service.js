@@ -2,8 +2,8 @@ import Message from "../models/Message.js";
 import Conversation from "../models/Conversation.js";
 import { getForMember } from "./conversation.service.js";
 
-// Older-to-newer page of messages. Pass `before` (a date) to load the page
-// that comes before the messages you already have.
+//! Older-to-newer page of messages. Pass `before` (a date) to load the page
+//! that comes before the messages you already have.
 export const getMessages = async (
   conversationId,
   userId,

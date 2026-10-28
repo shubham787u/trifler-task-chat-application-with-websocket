@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-// PATCH /users/me - every field optional, but at least one must be sent
+//! PATCH /users/me - every field optional, but at least one must be sent
 export const updateMeSchema = z
   .object({
     name: z
@@ -21,7 +21,7 @@ export const updateMeSchema = z
     message: "Send at least one field to update",
   });
 
-// GET /users?search=john&limit=10
+//! GET /users?search=john&limit=10
 export const searchUsersSchema = z.object({
   search: z
     .string({ error: "Search text is required" })

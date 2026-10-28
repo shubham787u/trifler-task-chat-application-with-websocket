@@ -1,3 +1,4 @@
+//! All websocket logic writen here in this file,
 //! # creates the WebSocketServer on path /ws, authenticates the connection
 import { WebSocketServer } from "ws";
 import { getUserFromToken } from "../services/token.service.js";
@@ -7,11 +8,11 @@ import { addConnection, removeConnection } from "./connectionStore.js";
 
 const HEARTBEAT_INTERVAL_MS = 30000;
 
-// Attaches a WebSocket server to the existing HTTP server (same port as the API).
-// Clients authenticate with a JWT in the WebSocket handshake subprotocol.
+//! Attaches a WebSocket server to the existing HTTP server (same port as the API).
+//! Clients authenticate with a JWT in the WebSocket handshake subprotocol.
 //
-// The JWT is checked BEFORE the connection is upgraded, so unauthenticated
-// clients never get a socket at all.
+//! The JWT is checked BEFORE the connection is upgraded, so unauthenticated
+//! clients never get a socket at all.
 export const initWebSocket = (server) => {
   const wss = new WebSocketServer({
     noServer: true,
@@ -30,7 +31,7 @@ export const initWebSocket = (server) => {
       }
 
       // Browsers cannot set Authorization headers on WebSockets. The token is
-      // sent as a handshake subprotocol so it does not appear in the URL.
+      //! sent as a handshake subprotocol so it does not appear in the URL.
       const requestedProtocols = (
         req.headers["sec-websocket-protocol"] || ""
       )

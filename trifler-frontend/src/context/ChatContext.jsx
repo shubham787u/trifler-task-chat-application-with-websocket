@@ -5,7 +5,10 @@ import {
   getConversationMessages,
   getConversations,
 } from "../services/chatService";
-import { createGroup as createGroupRequest } from "../services/groupService";
+import {
+  addGroupMember as addGroupMemberRequest,
+  createGroup as createGroupRequest,
+} from "../services/groupService";
 import { isBackendEnabled } from "../services/api";
 import { subscribeToEvents } from "../services/websocketService";
 import ChatContextValue from "./chatContextValue";
@@ -63,6 +66,7 @@ function mapServerConversation(conversation, currentUserId, messages = []) {
   const name = isGroup ? conversation.name : otherMember?.name || "Chat";
   const lastMessage = conversation.lastMessage;
   const lastActivity = lastMessage?.createdAt || conversation.updatedAt;
+  const admins = (conversation.admins || []).map(getId);
 
   return {
     id: getId(conversation),
@@ -77,7 +81,10 @@ function mapServerConversation(conversation, currentUserId, messages = []) {
     category: isGroup ? "group" : "direct",
     online: false,
     members: `${members.length} members`,
-    memberList: members.map((member) => member.name).filter(Boolean),
+    memberList: members
+      .filter((member) => member.name)
+      .map((member) => ({ id: getId(member), name: member.name })),
+    isAdmin: admins.includes(currentUserId),
     preview: lastMessage?.text || "Start a conversation",
     time: lastActivity
       ? formatMessageTime(lastActivity)
@@ -197,7 +204,7 @@ export function ChatProvider({ children }) {
     console.info("[Trifler local chat] Local conversations cleared.");
   }, [setConversations]);
 
-  // Add incoming STOMP messages to local state so the existing UI can render them.
+  // Map backend message events into the shape used by the chat UI.
   const receiveMessage = useCallback((conversationId, incomingEvent) => {
     const payload = incomingEvent?.message || incomingEvent;
     if (!conversationId || typeof payload?.text !== "string" || !payload.text.trim()) {
@@ -310,35 +317,31 @@ export function ChatProvider({ children }) {
     );
   }, [setConversations]);
 
-  const createGroup = useCallback((name) => {
+  const createGroup = useCallback(async ({ name, memberIds }) => {
     const groupName = name.trim();
-    if (!groupName) return null;
+    if (!groupName || !memberIds?.length) {
+      throw new Error("Enter a group name and select at least one member.");
+    }
 
-    const slug = groupName
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, "-")
-      .replace(/^-|-$/g, "") || "group";
-    const group = {
-      id: `${slug}-${Date.now()}`,
+    const serverGroup = await createGroupRequest({
       name: groupName,
-      initials: groupName.slice(0, 2).toUpperCase(),
-      color: "blue",
-      category: "group",
-      members: "1 member",
-      memberList: [user?.name || "Your profile"],
-      preview: "Group created",
-      time: "Now",
-      unread: 0,
-      messages: [],
-    };
-
-    setConversations((current) => [...current, group]);
-    console.info("[Trifler groups] Group created locally", group);
-    createGroupRequest(group).catch((error) => {
-      console.error("[Trifler groups] Could not create group on backend.", error);
+      memberIds,
     });
+    const group = mapServerConversation(serverGroup, currentUserId);
+    setConversations((current) => [group, ...current]);
     return group;
-  }, [setConversations, user?.name]);
+  }, [currentUserId, setConversations]);
+
+  const addGroupMember = useCallback(async (groupId, userId) => {
+    const serverGroup = await addGroupMemberRequest(groupId, userId);
+    const group = mapServerConversation(serverGroup, currentUserId);
+    setConversations((current) =>
+      current.map((conversation) =>
+        conversation.id === group.id ? { ...conversation, ...group } : conversation,
+      ),
+    );
+    return group;
+  }, [currentUserId, setConversations]);
 
   const createDirectConversation = useCallback(async (contact) => {
     const contactId = getId(contact);
@@ -371,6 +374,7 @@ export function ChatProvider({ children }) {
         sendMessage,
         removeMessage,
         createGroup,
+        addGroupMember,
         createDirectConversation,
       }}
     >

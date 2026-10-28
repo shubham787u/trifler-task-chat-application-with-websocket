@@ -1,8 +1,8 @@
 import { z } from "zod";
 import { objectIdSchema } from "./common.schema.js";
 
-// POST /groups
-// memberIds = the people to add. The creator is added automatically as admin.
+//! POST /groups
+//! memberIds = the people to add. The creator is added automatically as admin.
 export const createGroupSchema = z.object({
   name: z
     .string({ error: "Group name is required" })

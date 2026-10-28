@@ -1,4 +1,4 @@
-// # maps userId to sockets and conversationId to subscribersimport { WebSocket } from "ws";
+//! # maps userId to sockets and conversationId to subscribersimport { WebSocket } from "ws";
 
 // Who is connected right now.  userId (string) -> Set of sockets
 // One user can have several sockets at once (phone + laptop + two tabs).

@@ -8,7 +8,7 @@ export const MAX_GROUP_MEMBERS = 50;
 
 // --- helpers -----------------------------------------------------------------
 
-// Loads a conversation the user belongs to AND makes sure it is a group
+//! Loads a conversation the user belongs to AND makes sure it is a group
 const getGroupForMember = async (groupId, userId) => {
   const conversation = await getForMember(groupId, userId);
   if (conversation.type !== "group") throw ApiError.notFound("Group not found");

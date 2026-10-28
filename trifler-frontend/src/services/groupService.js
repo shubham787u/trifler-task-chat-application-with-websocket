@@ -1,35 +1,18 @@
-import api, { isBackendEnabled } from "./api";
-
-// Group endpoints are placeholders until matching backend routes are implemented.
-export async function getGroups() {
-  if (!isBackendEnabled) return null;
-
-  const response = await api.get("/groups");
-  return response.data;
-}
+import api from "./api";
 
 export async function createGroup(group) {
-  if (!isBackendEnabled) {
-    console.info("[Trifler groups] Local group (not sent to a server)", group);
-    return group;
-  }
-
-  const response = await api.post("/groups", { name: group.name });
-  return response.data;
+  const response = await api.post("/groups", {
+    name: group.name,
+    description: group.description || "",
+    memberIds: group.memberIds,
+  });
+  return response.data.group;
 }
 
-export async function addGroupMember(groupId, member) {
-  if (!isBackendEnabled) {
-    console.info("[Trifler groups] Local member addition (not sent to a server)", {
-      groupId,
-      member,
-    });
-    return { groupId, member };
-  }
-
+export async function addGroupMember(groupId, userId) {
   const response = await api.post(
     `/groups/${encodeURIComponent(groupId)}/members`,
-    { member },
+    { userId },
   );
-  return response.data;
+  return response.data.group;
 }

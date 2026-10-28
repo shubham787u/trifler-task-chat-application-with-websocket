@@ -1,5 +1,7 @@
-// Custom error class for errors we throw on purpose (wrong password, not found, etc.)
-// The error handler middleware turns these into clean JSON responses.
+//! All the api error handle status code and code no. with msg,
+//! Custom error class for errors we throw on purpose (wrong password, not found, etc.)
+//! The error handler middleware turns these into clean JSON responses.
+
 class ApiError extends Error {
   constructor(statusCode, message, errors = null) {
     super(message);

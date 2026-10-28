@@ -4,7 +4,7 @@ import { withDetails } from "./conversation.service.js";
 import { sendToUser, sendToUsers } from "../websocket/connectionStore.js";
 
 // Pushes changes made through the REST API to people who are online, so the
-// sidebar updates without a refresh.  Events sent:
+//! sidebar updates without a refresh.  Events sent:
 //   conversation.new      -> you now have a new chat/group (payload: full conversation)
 //   conversation.updated  -> members of a group changed   (payload: full conversation)
 //   conversation.removed  -> you no longer have this chat (payload: conversationId)
@@ -25,7 +25,7 @@ const safely =
     }
   };
 
-// A chat or group was created -> tell every member except the one who made it
+//! A chat or group was created -> tell every member except the one who made it
 export const notifyNewConversation = safely(
   "conversation.new",
   async (conversation, actorId) => {

@@ -1,4 +1,5 @@
-//  # routes incoming events to handlers by "type"import { ZodError } from "zod";
+//!  # routes incoming events to handlers by "type"import { ZodError } from "zod";
+//!Zod is a TypeScript-first schema declaration and validation library.
 import ApiError from "../utils/ApiError.js";
 import logger from "../utils/logger.js";
 import { sendToSocket } from "./connectionStore.js";
@@ -13,7 +14,7 @@ const handlers = new Map([
   ["typing", handleTyping],
 ]);
 
-// Flood protection: at most 30 events per 10 seconds per connection
+//! Flood protection: at most 30 events per 10 seconds per connection
 const RATE_WINDOW_MS = 10000;
 const RATE_MAX_EVENTS = 30;
 
@@ -27,7 +28,7 @@ const isRateLimited = (ws) => {
   return ws.rateCount > RATE_MAX_EVENTS;
 };
 
-// Every error reaches the client in one shape:
+//! Every error reaches the client in one shape:
 //   { type: "error", event: "<the event that failed>", clientId?, message }
 const sendError = (ws, event, message) =>
   sendToSocket(ws, { type: "error", event: event?.type, clientId: event?.clientId, message });

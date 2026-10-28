@@ -2,7 +2,7 @@ import Conversation from "../models/Conversation.js";
 import User from "../models/User.js";
 import ApiError from "../utils/ApiError.js";
 
-// Only these user fields are ever sent to other people
+//! Only these user fields are ever sent to other people
 const MEMBER_FIELDS = "name avatar lastSeen";
 
 // Fills in member names/avatars and the last message preview

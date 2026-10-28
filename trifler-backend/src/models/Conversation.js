@@ -2,7 +2,7 @@
 
 import mongoose from "mongoose";
 
-// One model for BOTH private chats and groups:
+//! One model for BOTH private chats and groups:
 //   type "direct" -> exactly 2 members, no name
 //   type "group"  -> 2+ members, has a name and admins
 const conversationSchema = new mongoose.Schema(

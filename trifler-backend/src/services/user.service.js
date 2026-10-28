@@ -3,7 +3,7 @@ import Conversation from "../models/Conversation.js";
 import Message from "../models/Message.js";
 import { removeMemberFromGroup } from "./group.service.js";
 
-// Deletes an account and cleans up everything that depends on it:
+//! Deletes an account and cleans up everything that depends on it:
 //  - private chats with this user are deleted (with their messages)
 //  - in groups the user is removed (see removeMemberFromGroup: empty groups are
 //    deleted, and the next member becomes admin if the last admin leaves)

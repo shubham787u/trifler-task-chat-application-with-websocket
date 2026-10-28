@@ -1,3 +1,4 @@
+//! all register and login schema writen here..........with required field,
 import { z } from "zod";
 
 export const registerSchema = z.object({

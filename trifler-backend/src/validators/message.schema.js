@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { objectIdSchema } from "./common.schema.js";
 
-// WebSocket event:  { type: "message.send", conversationId, text, clientId? }
+//! WebSocket event:  { type: "message.send", conversationId, text, clientId? }
 // clientId is optional: the frontend can put a temporary id on a message it
 // shows instantly ("optimistic UI") and match it to the saved message later.
 export const messageSendSchema = z.object({
@@ -14,7 +14,7 @@ export const messageSendSchema = z.object({
   clientId: z.string().max(64).optional(),
 });
 
-// WebSocket event:  { type: "typing", conversationId, isTyping? }
+//! WebSocket event:  { type: "typing", conversationId, isTyping? }
 export const typingSchema = z.object({
   conversationId: objectIdSchema,
   isTyping: z.boolean().default(true),

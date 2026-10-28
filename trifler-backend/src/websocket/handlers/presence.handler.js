@@ -1,4 +1,4 @@
-//  # online and offline status
+//!  # online and offline status
 import Conversation from "../../models/Conversation.js";
 import User from "../../models/User.js";
 import {
@@ -15,9 +15,9 @@ const getContactIds = async (userId) => {
   return ids.map(String).filter((id) => id !== String(userId));
 };
 
-// Called when a socket connects:
+//! Called when a socket connects:
 //  - the user gets the list of contacts that are online right now
-//  - if this is their first socket, their contacts are told they came online
+//!  - if this is their first socket, their contacts are told they came online
 export const onConnect = async (ws) => {
   const userId = ws.user.id;
   const isFirstSocket = addConnection(userId, ws); // runs before the first await
@@ -33,7 +33,7 @@ export const onConnect = async (ws) => {
   }
 };
 
-// Called when a socket closes. Only when the LAST socket closes does the user
+//! Called when a socket closes. Only when the LAST socket closes does the user
 // count as offline (closing one of two tabs must not show them offline).
 export const onDisconnect = async (ws) => {
   const userId = ws.user.id;

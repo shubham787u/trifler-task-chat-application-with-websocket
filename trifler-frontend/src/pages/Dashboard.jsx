@@ -28,6 +28,7 @@ export default function Dashboard({ mode = "workspace" }) {
     sendMessage: createMessage,
     removeMessage,
     createGroup: createLocalGroup,
+    addGroupMember,
     createDirectConversation,
   } = useChat();
   const { publishMessage, subscribe } = useWebSocket();
@@ -150,8 +151,8 @@ export default function Dashboard({ mode = "workspace" }) {
     navigate(`/private-chat/${conversation.id}`);
   }
 
-  function createGroup(name) {
-    const group = createLocalGroup(name);
+  async function createGroup(groupData) {
+    const group = await createLocalGroup(groupData);
     if (!group) return;
     setCreateGroupOpen(false);
     setFilter("all");
@@ -354,6 +355,7 @@ export default function Dashboard({ mode = "workspace" }) {
           activeConversation?.category === "group" ? activeConversation : null
         }
         members={activeGroupMembers}
+        onAddMember={addGroupMember}
         onClose={() => setMembersOpen(false)}
       />
     </main>

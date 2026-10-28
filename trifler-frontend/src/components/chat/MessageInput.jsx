@@ -25,7 +25,7 @@ export default function MessageInput({ conversation, onSend }) {
             event.currentTarget.form.requestSubmit();
           }
         }}
-        placeholder={`Message ${recipient}.....`}
+        placeholder={`Message to ${recipient}.....`}
         aria-label="Write a message"
         rows={1}
       />
@@ -42,7 +42,12 @@ export default function MessageInput({ conversation, onSend }) {
         </div>
         <div className="composer-send">
           {/* <span>Press <kbd>↵</kbd> to send</span> */}
-          <button className="send-button" type="submit" disabled={!draft.trim()} aria-label="Send message">
+          <button
+            className="send-button"
+            type="submit"
+            disabled={!draft.trim()}
+            aria-label="Send message"
+          >
             <Send size={17} />
           </button>
         </div>

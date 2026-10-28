@@ -12,8 +12,8 @@ const buildLimiter = ({ windowMs, limit, message }) =>
 
 // General limiter for the whole API: 300 requests per 15 minutes per IP
 export const apiLimiter = buildLimiter({
-  windowMs: 15 * 60 * 1000,
-  limit: 300,
+  windowMs: 15 * 60 * 1000, //!15 * 60 * 1000 = 15 minutes × 60 seconds × 1000 milliseconds = 900,000 ms = 15 minutes
+  limit: 300, //!Maximum number of requests allowed in that window
   message: "Too many requests, please try again later.",
 });
 

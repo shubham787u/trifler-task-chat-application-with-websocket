@@ -27,7 +27,7 @@ export default function GroupInfoPanel({ group, members, onViewMembers }) {
             <Users size={15} />
             <h3>Members</h3>
           </div>
-          <button type="button" onClick={onViewMembers} aria-label="View all group members">
+          <button type="button" onClick={onViewMembers} aria-label="View and manage group members">
             <ChevronRight size={17} />
           </button>
         </div>
@@ -52,11 +52,9 @@ export default function GroupInfoPanel({ group, members, onViewMembers }) {
             );
           })}
         </ul>
-        {members.length > 5 && (
-          <button className="group-info-view-all" type="button" onClick={onViewMembers}>
-            View all {members.length} members
-          </button>
-        )}
+        <button className="group-info-view-all" type="button" onClick={onViewMembers}>
+          View and manage members
+        </button>
       </section>
     </aside>
   );
