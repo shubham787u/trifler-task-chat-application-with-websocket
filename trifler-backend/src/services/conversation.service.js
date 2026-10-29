@@ -17,8 +17,8 @@ export const listForUser = (userId) =>
     Conversation.find({ members: userId }).sort({ updatedAt: -1 }).limit(100),
   );
 
-// Loads a conversation and makes sure this user belongs to it.
-// Used by the REST message routes AND the WebSocket handlers.
+//! Loads a conversation and makes sure this user belongs to it.
+// ! Used by the REST message routes AND the WebSocket handlers.
 export const getForMember = async (conversationId, userId) => {
   const conversation = await Conversation.findById(conversationId);
   if (!conversation) throw ApiError.notFound("Conversation not found");

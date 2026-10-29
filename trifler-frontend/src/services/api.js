@@ -12,7 +12,7 @@ const api = axios.create({
 
 api.interceptors.request.use(
   (config) => {
-    // Attach the locally stored access token only when a backend request is made.
+    //! Attach the locally stored access token only when a backend request is made.
     const token = localStorage.getItem("chatconnect_token");
 
     if (token) {
@@ -24,7 +24,7 @@ api.interceptors.request.use(
   (error) => Promise.reject(error),
 );
 
-// Keep backend failures explicit; service callers decide how to present them.
+//! Keep backend failures explicit; service callers decide how to present them.
 api.interceptors.response.use(
   (response) => response,
   (error) => {

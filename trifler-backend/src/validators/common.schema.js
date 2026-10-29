@@ -5,5 +5,5 @@ export const objectIdSchema = z
   .string({ error: "Id is required" })
   .regex(/^[a-f\d]{24}$/i, "Invalid id");
 
-// For routes like /conversations/:id/messages
+//! For routes like /conversations/:id/messages
 export const idParamSchema = z.object({ id: objectIdSchema });
